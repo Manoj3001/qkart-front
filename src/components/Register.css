@@ -1,12 +1,10 @@
-/* TODO: CRIO_TASK_MODULE_REGISTER - For screens of min width 768px, display the form content to the right end of the screen */
 .content {
   background-image: url("../assets/hero_image.png");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
   display: flex;
-  justify-content: flex-end;
-  align-items: center;
+  justify-content: center;
   height: 90vh;
 }
 
@@ -16,10 +14,9 @@
   padding: 2rem;
   min-width: 80%;
   margin: 2rem;
-  /* margin-left: 30px; */
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
-  /* transform: scale(0.8); */
-  
+  height:70%;
+  transform: scale(0.8);
 }
 
 .title {
@@ -33,7 +30,6 @@
 .link {
   font-weight: 700;
   text-decoration: none;
-  color: #45c09f;
 }
 
 .link:focus {
@@ -48,17 +44,19 @@
   color: #45c09f;
 }
 
-.button {
-    background-color: #00a278 !important;
+/* .button {
+  background-color: #00a278 !important;
 }
 
 .button:hover {
-    background-color: #00845c !important;
-}
+  background-color: #00845c !important;
+} */
 
 @media screen and (min-width: 768px) {
+  .content {
+      justify-content: flex-end;
+  }
   .form {
-    min-width: 24rem;
-    
+      min-width: 24rem;
   }
 }

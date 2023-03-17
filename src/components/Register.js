@@ -7,124 +7,64 @@ import { config } from "../App";
 import Footer from "./Footer";
 import Header from "./Header";
 import "./Register.css";
-
+import { useHistory, Link } from "react-router-dom";
 const Register = () => {
+  const history = useHistory();
   const { enqueueSnackbar } = useSnackbar();
-
-
-  // TODO: CRIO_TASK_MODULE_REGISTER - Implement the register function
-  /**
-   * Definition for register handler
-   * - Function to be called when the user clicks on the register button or submits the register form
-   *
-   * @param {{ username: string, password: string, confirmPassword: string }} formData
-   *
-   *  Object with values of username, password and confirm password user entered to register
-   *
-   * API endpoint - "POST /auth/register"
-   *
-   * Example for successful response from backend for the API call:
-   * HTTP 201
-   * {
-   *      "success": true,
-   * }
-   *
-   * Example for failed response from backend for the API call:
-   * HTTP 400
-   * {
-   *      "success": false,
-   *      "message": "Username is already taken"
-   * }
-   */
-   const [formData,setFormData]=useState({
-    username: "",
-    password:"",
-    confirmPassword:"",
-  });
+  // TODO: CRIO_TASK_MODULE_REGISTER - Implement the register function  /**   * Definition for register handler   * - Function to be called when the user clicks on the register button or submits the register form   *   * @param {{ username: string, password: string, confirmPassword: string }} formData   *  Object with values of username, password and confirm password user entered to register   *   * API endpoint - "POST /auth/register"   *   * Example for successful response from backend for the API call:   * HTTP 201   * {   *      "success": true,   * }   *   * Example for failed response from backend for the API call:   * HTTP 400   * {   *      "success": false,   *      "message": "Username is already taken"   * }   */  // Decalring use State Variables  
+  const [formData, setFormData] = useState({username: "", password: "", confirmPassword: ""})
   const [isLoading, setIsLoading] = useState(false);
   const handleInputChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
+    let name = e.target.name;
+    let value = e.target.value;
+    setFormData({...formData, [name]:value});
+    console.log(formData)
+  }
   const register = async (formData) => {
-    setIsLoading(true);
-    const isValid = validateInput(formData);
-    if (isValid) {
-      try {
-        const data = { username: formData.username, password: formData.password}
-         const response = await axios.post(
-          `${config.endpoint}/auth/register`,
-          data        );
-        console.log(response)
-        if (response.data.success) {
-          enqueueSnackbar("Registered successfully", { variant: "success" });
-        }
-        setIsLoading(false);
-      } 
-      catch (error) {
-        try{
+    if(validateInput(formData)){
+      setIsLoading(true);
+      try{
+        await axios.post(`${config.endpoint}/auth/register`,{username:formData.username, password:formData.password}).then((resp)=>{
+          if(resp.data.success){
+            enqueueSnackbar("Registered successfully", { variant: "success" });
+            setIsLoading(false);
+            history.push('/login')
+          }
+        }).catch((error)=>{
           enqueueSnackbar(error.response.data.message, { variant: "error" });
-        }catch(err){
-          enqueueSnackbar("Something went wrong. Check that the backend is running, reachable and returns valid JSON", { variant: "error" });
-        }
+          setIsLoading(false);
+        });
+      }
+      catch(error){
+        enqueueSnackbar("Something went wrong. Check that the backend is running, reachable and returns valid JSON.", { variant: "error" });
         setIsLoading(false);
       }
     }
-    
-    
   };
-
-  // TODO: CRIO_TASK_MODULE_REGISTER - Implement user input validation logic
-  /**
-   * Validate the input values so that any bad or illegal values are not passed to the backend.
-   *
-   * @param {{ username: string, password: string, confirmPassword: string }} data
-   *  Object with values of username, password and confirm password user entered to register
-   *
-   * @returns {boolean}
-   *    Whether validation has passed or not
-   *
-   * Return false if any validation condition fails, otherwise return true.
-   * (NOTE: The error messages to be shown for each of these cases, are given with them)
-   * -    Check that username field is not an empty value - "Username is a required field"
-   * -    Check that username field is not less than 6 characters in length - "Username must be at least 6 characters"
-   * -    Check that password field is not an empty value - "Password is a required field"
-   * -    Check that password field is not less than 6 characters in length - "Password must be at least 6 characters"
-   * -    Check that confirmPassword field has the same value as password field - Passwords do not match
-   */
+  // TODO: CRIO_TASK_MODULE_REGISTER - Implement user input validation logic  /**   * Validate the input values so that any bad or illegal values are not passed to the backend.   *   * @param {{ username: string, password: string, confirmPassword: string }} data   *  Object with values of username, password and confirm password user entered to register   *    * @returns {boolean}   *    Whether validation has passed or not   *   * Return false if any validation condition fails, otherwise return true.   * (NOTE: The error messages to be shown for each of these cases, are given with them)   * -    Check that username field is not an empty value - "Username is a required field"   * -    Check that username field is not less than 6 characters in length - "Username must be at least 6 characters"   * -    Check that password field is not an empty value - "Password is a required field"   * -    Check that password field is not less than 6 characters in length - "Password must be at least 6 characters"   * -    Check that confirmPassword field has the same value as password field - Passwords do not match   */  
   const validateInput = (data) => {
-    if (!data.username) {
-      enqueueSnackbar("Username is a required field", { variant: "warning" });
-      setIsLoading(false);
-      return false;
+    let bool = true;
+    if(data.username === ""){
+      enqueueSnackbar("Username is a required field", { variant: "error" });
+      bool = false;
     }
-    if (data.username.length < 6) {
-      enqueueSnackbar("Username must be at least 6 characters", {
-        variant: "error",
-      });
-      setIsLoading(false);
-      return false;
+    else if(data.username.length < 6){
+      enqueueSnackbar("Username must be at least 6 characters", { variant: "error" });
+      bool = false;
     }
-    if (!data.password) {
-      enqueueSnackbar("Password is a required field", { variant: "warning" });
-      setIsLoading(false);
-      return false;
+    else if(data.password === ""){
+      enqueueSnackbar("Password is a required field", { variant: "error" });
+      bool = false;
     }
-    if (data.password.length < 6) {
-      enqueueSnackbar("Password must be at least 6 characters", {
-        variant: "error",
-      });
-      setIsLoading(false);
-      return false;
+    else if(data.password.length < 6){
+      enqueueSnackbar("Password must be at least 6 characters", { variant: "error" });
+      bool = false;
     }
-    if (data.password !== data.confirmPassword) {
-      enqueueSnackbar("Passwords do not match", { variant: "warning" });
-      setIsLoading(false);
-      return false;
+    else if(data.password !== data.confirmPassword){
+      enqueueSnackbar("Passwords do not match", { variant: "error" });
+      bool = false;
     }
-    return true;
+    return bool;
   };
 
   return (
