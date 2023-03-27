@@ -5,6 +5,7 @@ import Box from "@mui/material/Box";
 import React from "react";
 import "./Header.css";
 import { useHistory, Link } from "react-router-dom";
+
 const Header = ({ children, hasHiddenAuthButtons }) => {
   const history = useHistory();
   const [log, setLog] = useState(localStorage.getItem("username"));
@@ -16,8 +17,9 @@ const Header = ({ children, hasHiddenAuthButtons }) => {
     {hasHiddenAuthButtons ? 
      (<Button className="explore-button" startIcon={<ArrowBackIcon />}variant="text" onClick={(e) => {history.push("/");}} > Back to explore</Button>) : 
     (
-        <>        
-        <Box width="30vw">{children}</Box>        {/* place where children takes the props from products.js */}
+             
+        <Box width="30vw">{children}</Box>        
+        {/* place where children takes the props from products.js */}
         <Box>          
           {log ? 
           (

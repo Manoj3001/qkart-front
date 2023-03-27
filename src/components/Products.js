@@ -23,6 +23,7 @@ const Products=()=>{
    const [searchText, setSearchText] = useState("");
    const { enqueueSnackbar } = useSnackbar();
    // Make API call to get the products list and store it to display the products  
+   
    const performAPICall = async () => {
     setLoading(true);
     try{
@@ -38,10 +39,12 @@ const Products=()=>{
       }
       setLoading(false);
     };
+  
   useEffect(() => {
     performAPICall();
   }, []);
   // TODO: CRIO_TASK_MODULE_PRODUCTS - Implement search logic  /**   * Definition for search handler   * This is the function that is called on adding new search keys   *   * @param {string} text   *    Text user types in the search bar. To filter the displayed products based on this text.   *   * @returns { Array.<Product> }   *      Array of objects with complete data on filtered set of products   *   * API endpoint - "GET /products/search?value=<search-query>"   *   */  
+  
   const performSearch = async (text) => {
     try {
       const response = await axios.get(
