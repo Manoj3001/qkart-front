@@ -133,7 +133,8 @@ const ItemQuantity = ({
             </Box> 
             </Box> 
             </> 
-            );   };
+            );   
+          };
 /**
  * Component to display the Cart view
  * 
@@ -151,14 +152,16 @@ const ItemQuantity = ({
  const Cart = ({ 
   products, items = [], handleQuantity, isReadOnly=false }) => { 
     let history=useHistory(); 
-    if (!items.length) { 
+    if (!items.length) 
+    { 
       return ( 
       <Box className="cart empty"> 
       <ShoppingCartOutlined className="empty-cart-icon" /> 
       <Box color="#aaa" textAlign="center"> Cart is empty. Add more items to the cart to checkout. 
       </Box> 
       </Box> 
-      ); }
+      ); 
+    }
 
   return (
     <>
