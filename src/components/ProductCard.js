@@ -7,9 +7,11 @@ import {
   CardMedia,
   Rating,
   Typography,
-} from "@mui/material";
+} 
+from "@mui/material";
 import React from "react";
 import "./ProductCard.css";
+
 const ProductCard = ({ product, handleAddToCart }) => {
   return (
       <Card className="card">        
@@ -19,9 +21,13 @@ const ProductCard = ({ product, handleAddToCart }) => {
         <Typography color="black" variant="h6" style={{fontWeight:'600'}}>${product.cost}
         </Typography>         
         </CardContent>         
-        <Rating name="read-only" value={product.rating} readOnly style={{paddingLeft:'10px'}}/>          <br/>           <Button className="button" variant="contained" style={{margin:'auto 10px'}}>            <AddShoppingCartOutlined style={{paddingRight:'15px'}}/>Add to Cart
+        <Rating name="read-only" value={product.rating} readOnly style={{paddingLeft:'10px'}}/>          <br/>           
+        <Button className="button" variant="contained" style={{margin:'auto 10px'}} onClick={handleAddToCart}>            
+        <AddShoppingCartOutlined style={{paddingRight:'15px'}} />Add to Cart
            </Button>            
-           <br/><br/>             </Card>  
+           <br/>
+           <br/>             
+           </Card>  
            );
 };
 
